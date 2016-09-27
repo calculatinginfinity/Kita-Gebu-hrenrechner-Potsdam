@@ -1,4 +1,4 @@
-function berechneKitaGebuehren () {
+function berechneKitaGebuehren (json) {
 
 	var ergebnis = 0;
 	var gehaltId = -1;
@@ -7,10 +7,109 @@ function berechneKitaGebuehren () {
 	
 	var multiplikatorKinderAnzahl = parseFloat(radioWert(document.Kinderform.anzahlKinder));
 
+
 	/*
-		Ermitteln, in welchem Gehaltsbereich sich das eingegebene Gehalt befindet
-		(vergl. Gebühren aus dem Kita-Satzungs PDF)
+	* Berechnet zunächst das Gesamtgehalt und es am Bildschirm auszugeben
 	*/
+	gehalt1 = parseFloat(document.getElementById("gehalt1").value);
+	gehalt2 = parseFloat(document.getElementById("gehalt2").value);
+
+	//falls im anderen Feld keine Eingabe steht (=false)
+	if (!gehalt1)
+	{
+		gehalt1 = 0;
+
+	}
+	if (!gehalt2)
+	{
+		gehalt2 = 0;
+	}
+
+	//gibt das Gesamtgehalt auf der Webseite aus
+	$('#gesamtgehalt').html(gehalt1 + gehalt2);
+
+
+
+	//Ermitteln, in welchem Gehaltsbereich sich das eingegebene Gehalt befindet
+	gehaltId = getGehaltId();
+
+
+
+	/*
+	*  Gebühren aus dem JSON-Objekt auslesen
+	*/ 
+	if (betreuungsArt == 'krippe')
+	{			
+	
+		if (stundenAnzahl == 6)
+		{
+			ergebnis = json.kitagebueren[gehaltId].krippe.stunden6;
+		}
+		else if (stundenAnzahl == 8)
+		{
+			ergebnis = json.kitagebueren[gehaltId].krippe.stunden8;
+
+		}
+		else
+		{
+			ergebnis = json.kitagebueren[gehaltId].krippe.stunden10;
+		}
+	}
+	else if (betreuungsArt == 'kindergarten')
+	{
+
+		//alert(betreuungsArt);
+
+		if (stundenAnzahl == 6)
+		{
+			ergebnis = json.kitagebueren[gehaltId].kindergarten.stunden6;
+		}
+		else if (stundenAnzahl == 8)
+		{
+			ergebnis = json.kitagebueren[gehaltId].kindergarten.stunden8;
+
+		}
+		else
+		{
+			ergebnis = json.kitagebueren[gehaltId].kindergarten.stunden10;
+		}
+
+	}
+	else
+	{
+
+		if (stundenAnzahl == 6)
+		{
+			ergebnis = json.kitagebueren[gehaltId].hort.stunden4;
+		}
+		else if (stundenAnzahl == 8)
+		{
+			ergebnis = json.kitagebueren[gehaltId].hort.stunden6;
+
+		}
+		else
+		{
+			ergebnis = json.kitagebueren[gehaltId].hort.stunden8;
+		}
+	}
+
+	document.getElementById("gebuehr").value = Math.round(ergebnis * multiplikatorKinderAnzahl *100) /100;
+
+}
+
+
+
+
+
+/*
+ * Ermitteln, in welchem Gehaltsbereich sich das eingegebene Gehalt befindet
+ * (vergl. Gebühren aus dem Kita-Satzungs PDF)
+*/
+function getGehaltId() {
+
+	var gehltId = 0;
+
+
 	if (gesamtgehalt.value < 22001) {
 		gehaltId = 0;
 	}
@@ -171,99 +270,15 @@ function berechneKitaGebuehren () {
 		gehaltId = 52;
 	}
 
-
-
-	//read data from the external .json file
-	$.getJSON("gebuehren.json", function(json) {
- 
-		if (betreuungsArt == 'krippe')
-		{			
-		
-			if (stundenAnzahl == 6)
-			{
-				ergebnis = json.kitagebueren[gehaltId].krippe.stunden6;
-			}
-			else if (stundenAnzahl == 8)
-			{
-				ergebnis = json.kitagebueren[gehaltId].krippe.stunden8;
-
-			}
-			else
-			{
-				ergebnis = json.kitagebueren[gehaltId].krippe.stunden10;
-			}
-		}
-		else if (betreuungsArt == 'kindergarten')
-		{
-
-			//alert(betreuungsArt);
-
-			if (stundenAnzahl == 6)
-			{
-				ergebnis = json.kitagebueren[gehaltId].kindergarten.stunden6;
-			}
-			else if (stundenAnzahl == 8)
-			{
-				ergebnis = json.kitagebueren[gehaltId].kindergarten.stunden8;
-
-			}
-			else
-			{
-				ergebnis = json.kitagebueren[gehaltId].kindergarten.stunden10;
-			}
-
-		}
-		else
-		{
-
-			if (stundenAnzahl == 6)
-			{
-				ergebnis = json.kitagebueren[gehaltId].hort.stunden4;
-			}
-			else if (stundenAnzahl == 8)
-			{
-				ergebnis = json.kitagebueren[gehaltId].hort.stunden6;
-
-			}
-			else
-			{
-				ergebnis = json.kitagebueren[gehaltId].hort.stunden8;
-			}
-		}
-
-		document.getElementById("gebuehr").value = Math.round(ergebnis * multiplikatorKinderAnzahl *100) /100;
-
-	});
-}
-
-
-
-//Addiert die beiden Felder mit den Gehältern zum Gesmatgehalt
-function berechneGesamtgehalt() {
-
-	gehalt1 = parseFloat(document.getElementById("gehalt1").value);
-	gehalt2 = parseFloat(document.getElementById("gehalt2").value);
-
-	//falls im anderen Feld keine Eingabe steht (=false)
-	if (!gehalt1)
-	{
-		gehalt1 = 0;
-
-	}
-	if (!gehalt2)
-	{
-		gehalt2 = 0;
-	}
-
-	$('#gesamtgehalt').html(gehalt1 + gehalt2);
-
-	berechneKitaGebuehren();
+	return gehaltId;
 
 }
 
 
 
 
+
+//liest die Auswahl der Radion-Buttons aus
 function radioWert(rObj) {
 
 	for (var i=0; i<rObj.length; i++) if (rObj[i].checked) return rObj[i].value;
@@ -274,7 +289,10 @@ function radioWert(rObj) {
 
 
 
-//Diese Funktion löst alle Events aus
+/*
+ *	Initialisierunt, danach
+ *	löst diese Funktion alle Events aus 
+ */ 
 $( document ).ready(function() {
 
 	/* Initial auf Null */
@@ -282,6 +300,14 @@ $( document ).ready(function() {
 	$('#gesamtgehalt').html('0');
 	var gehalt1 = 0;
 	var gehalt2 = 0;
+	var gebuehrenjson;
+
+
+	//Lädt die externe JSON-Datei in Variable
+	$.getJSON("gebuehren.json", function(json) {
+		gebuehrenjson = json;
+	});
+
 
 	/* Stundenanzahl ändern */
 	$('input[name="Betreuungsart"]').on('change', function() {
@@ -308,31 +334,29 @@ $( document ).ready(function() {
 
 
 	$('input[id="gehalt1"]').on('change, keyup', function(){
-		berechneGesamtgehalt(); 
+		berechneKitaGebuehren(gebuehrenjson);
 	})
 
 
 	$('input[id="gehalt2"]').on('change, keyup', function(){
-		berechneGesamtgehalt(); 
+		berechneKitaGebuehren(gebuehrenjson);
 	})
 
  	//change, keyup und mousup lassen sich nicht kombinieren???
  	//deshalb die Blöcke nun doppelt
 	$('input[id="gehalt1"]').on('mouseup', function(){
-		berechneGesamtgehalt(); 
+		berechneKitaGebuehren(gebuehrenjson);
 	})
 
 
 	$('input[id="gehalt2"]').on('mouseup', function(){
-		berechneGesamtgehalt(); 
+		berechneKitaGebuehren(gebuehrenjson);
 	})
-
-
 
 	/* Änderungen im Formular */
 	$('input[name="Betreuungsart"], input[name="Stundenanzahl"], input[name="anzahlKinder"]').on('change', function(){
 
-		berechneGesamtgehalt();
+		berechneKitaGebuehren(gebuehrenjson);
 
 	});
 
