@@ -27,13 +27,8 @@ function berechneKitaGebuehren (json) {
 
 
 
-	//$('#gesamtgehalt').html(gehalt1 + gehalt2);
-	//formatiereGesamtgehalt(gehalt1 + gehalt2);
-
 	$('#gesamtgehalt').html(formatiereGesamtgehalt(gehalt1 + gehalt2));
 	
-
-
 
 
 	//Ermitteln, in welchem Gehaltsbereich sich das eingegebene Gesamtgehalt befindet
@@ -63,8 +58,6 @@ function berechneKitaGebuehren (json) {
 	}
 	else if (betreuungsArt == 'kindergarten')
 	{
-
-		//alert(betreuungsArt);
 
 		if (stundenAnzahl == 6)
 		{
@@ -114,7 +107,6 @@ function berechneKitaGebuehren (json) {
 function getGehaltId(gesamtgehalt) {
 
 	var gehltId = 0;
-
 
 	if (gesamtgehalt < 22001) {
 		gehaltId = 0;
