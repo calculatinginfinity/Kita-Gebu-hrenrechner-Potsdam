@@ -38,12 +38,12 @@
 
 				<div class="col-md-8 col-md-offset-2 panel panel-default">
 			      	<!-- Example row of columns -->
-			      	<b>Jahreseinkommen:</b><br>
+			      	<b>Einkommen:</b><br>
 				   	<div class="row">   
 				        <div class="col-md-6">
 				        	<p>
 					        	<div class="input">
-					        		1. Elterngehalt:
+					        		1. Elterngehalt (pro Jahr):
 					 				<input type="number" name="gehalt1" id="gehalt1" placeholder="0"> €
 						 		</div>
 					 		</p>
@@ -51,7 +51,7 @@
 					    <div class="col-md-6">
 					    	<p>
 						    	<div class="input">
-						    		2. Elterngehalt:					        
+						    		2. Elterngehalt (pro Jahr):						        
 				          			<input type="number" name="gehalt2" id="gehalt2" placeholder="0"> €
 								</div>
 							</p>
@@ -108,9 +108,11 @@
 				</div>
 
 		
-				<div class="col-md-8 col-md-offset-2 panel panel-default">
-					<b>Die monatlichen Gebühren für das Kind betragen:
-						<output id="gebuehr" type="number"></output> €.	</b>
+				<div id="result" class="col-md-8 col-md-offset-2 panel panel-default">
+					<strong>
+						Die monatlichen Gebühren für das Kind betragen:
+						<span id="gebuehr"></span> €.
+					</strong>
 				</div>
 
 
@@ -132,10 +134,12 @@
 	    	<p class="text-muted">
 	    		<small class="text-muted">
 	    			Entstanden im <a href="https://codefor.de/potsdam/" target="_blank">OK Lab Potsdam</a> basierend auf der <a href="https://www.potsdam.de/content/kita-satzung-0" target="_blank">Kita-Satzung</a> (2016). <br>
-	    			Foto von <a href="https://www.flickr.com/photos/130139363@N07/18379668092/in/photostream/" target="_blank">Linh Lưu Huệ</a> (<a href="http://creativecommons.org/licenses/by/2.0/deed.en" target="_blank">CC-Lizenz</a>), Font: <a href="https://www.fontsquirrel.com/fonts/open-sans" target="_blank">Open Sans</a> (<a href="https://www.fontsquirrel.com/license/open-sans" target="_blank">Apache v2.0 Lizenz</a>). 
+	    			Font: <a href="https://www.fontsquirrel.com/fonts/open-sans" target="_blank">Open Sans</a> (<a href="https://www.fontsquirrel.com/license/open-sans" target="_blank">Apache v2.0 Lizenz</a>). 
 	    		</small>
 	    	</p>
 		</footer>
+
+		
 
 	</body>
 </html>
